@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Monitor 3000</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        /* Custom styles for demonstration/icons if needed, otherwise rely on Tailwind */
+        .icon-humidity::before {
+            content: '💧'; /* Water drop emoji for humidity */
+        }
+        .icon-temperature::before {
+            content: '🌡️'; /* Thermometer emoji for temperature */
+        }
+        .icon-light::before {
+            content: '☀️'; /* Sun emoji for light */
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <!-- Header Section -->
+    <header class="w-full max-w-4xl bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 rounded-xl shadow-lg mb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold text-center">Plant Monitor 3000</h1>
+    </header>
+
+    <!-- Main Plant Monitoring Cards Container -->
+    <main class="w-full max-w-4xl bg-white p-6 rounded-xl shadow-xl flex flex-col items-center space-y-6">
+        <div id="plant-container" class="w-full flex flex-col items-center space-y-6">
+            <!-- Template Plant Card (Initial Golden Pothos) -->
+            <div id="golden-pothos-card" class="plant-card w-full p-6 bg-white rounded-xl shadow-md">
+                <!-- Plant Name and Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-between items-center w-full mb-4 space-y-4 sm:space-y-0">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 plant-name">Golden Pothos</h2>
+                    <button class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 remove-plant-btn">
+                        Remove
+                    </button>
+                </div>
+
+                <!-- Sensor Data and Plant Picture Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+
+                    <!-- Humidity Card -->
+                    <div class="flex flex-col items-center justify-center bg-blue-100 p-6 rounded-xl shadow-md text-center">
+                        <span class="icon-humidity text-5xl mb-3"></span>
+                        <p class="text-xl font-semibold text-gray-700 mb-1">Humidity</p>
+                        <p class="text-3xl font-bold text-blue-800 humidity-value">75%</p>
+                    </div>
+
+                    <!-- Temperature Card -->
+                    <div class="flex flex-col items-center justify-center bg-red-100 p-6 rounded-xl shadow-md text-center">
+                        <span class="icon-temperature text-5xl mb-3"></span>
+                        <p class="text-xl font-semibold text-gray-700 mb-1">Temperature</p>
+                        <p class="text-3xl font-bold text-red-800 temperature-value">25°C</p>
+                    </div>
+
+                    <!-- Light Intensity Card -->
+                    <div class="flex flex-col items-center justify-center bg-yellow-100 p-6 rounded-xl shadow-md text-center">
+                        <span class="icon-light text-5xl mb-3"></span>
+                        <p class="text-xl font-semibold text-gray-700 mb-1">Light Intensity</p>
+                        <p class="text-3xl font-bold text-yellow-800 light-value">2k Lux</p>
+                    </div>
+
+                    <!-- Plant Picture Card -->
+                    <div class="flex flex-col items-center bg-gray-100 p-6 rounded-xl shadow-md text-center col-span-1 sm:col-span-2 lg:col-span-1">
+                        <p class="text-xl font-semibold text-gray-700 mb-3">Recent Pic</p>
+                        <img src="https://placehold.co/200x200/a3e635/000000?text=Plant" alt="Recent Plant Picture" class="w-48 h-48 object-cover rounded-lg shadow-inner mb-4 border-2 border-green-400 plant-img">
+                        <button class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 update-pic-btn">
+                            Update Pic
+                        </button>
+                    </div>
+
+                </div> <!-- End of Sensor Data and Plant Picture Grid -->
+            </div> <!-- End of Template Plant Card -->
+        </div> <!-- End of plant-container -->
+    </main> <!-- End of Main Plant Monitoring Cards Container -->
+
+    <!-- Add New Plant Button -->
+    <div class="w-full max-w-4xl mt-8 flex justify-center">
+        <button id="add-new-plant-btn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+            + Add New Plant
+        </button>
+    </div>
+
+    <!-- Modal for Add New Plant -->
+    <div id="add-plant-modal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-8 rounded-xl shadow-2xl w-96 max-w-sm flex flex-col items-center space-y-6">
+            <h3 class="text-2xl font-bold text-gray-800">Add New Plant</h3>
+            <input type="text" id="plant-name-input" placeholder="Enter Plant Name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div class="flex space-x-4 w-full justify-center">
+                <button id="submit-plant-btn" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                    Add Plant
+                </button>
+                <button id="cancel-plant-btn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const addPlantBtn = document.getElementById('add-new-plant-btn');
+            const addPlantModal = document.getElementById('add-plant-modal');
+            const submitPlantBtn = document.getElementById('submit-plant-btn');
+            const cancelPlantBtn = document.getElementById('cancel-plant-btn');
+            const plantNameInput = document.getElementById('plant-name-input');
+            const plantContainer = document.getElementById('plant-container');
+            const goldenPothosCard = document.getElementById('golden-pothos-card');
+
+            // Function to attach event listeners to a new plant card
+            function attachCardListeners(cardElement) {
+                const removeBtn = cardElement.querySelector('.remove-plant-btn');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', () => {
+                        // In a real application, you might want to ask for confirmation
+                        cardElement.remove(); // Remove the specific plant card
+                    });
+                }
+
+                // Add functionality for 'Update Pic' button if needed in the future
+                const updatePicBtn = cardElement.querySelector('.update-pic-btn');
+                if (updatePicBtn) {
+                    updatePicBtn.addEventListener('click', () => {
+                        // Example: console.log('Update Pic clicked for:', cardElement.querySelector('.plant-name').textContent);
+                        // Implement image upload/selection logic here
+                        console.log('Update Pic button clicked!');
+                    });
+                }
+            }
+
+            // Attach listeners to the initial Golden Pothos card
+            attachCardListeners(goldenPothosCard);
+
+            // Show the modal when 'Add New Plant' is clicked
+            addPlantBtn.addEventListener('click', () => {
+                addPlantModal.classList.remove('hidden');
+                plantNameInput.value = ''; // Clear input field
+                plantNameInput.focus(); // Focus on the input
+            });
+
+            // Hide the modal when 'Cancel' is clicked
+            cancelPlantBtn.addEventListener('click', () => {
+                addPlantModal.classList.add('hidden');
+            });
+
+            // Handle adding a new plant when 'Add Plant' is clicked
+            submitPlantBtn.addEventListener('click', () => {
+                const newPlantName = plantNameInput.value.trim();
+                if (newPlantName) {
+                    // Clone the template plant card (Golden Pothos card)
+                    const newPlantCard = goldenPothosCard.cloneNode(true);
+                    newPlantCard.id = `plant-card-${Date.now()}`; // Assign a unique ID
+
+                    // Update the plant name
+                    newPlantCard.querySelector('.plant-name').textContent = newPlantName;
+
+                    // Reset sensor values for the new plant to default or initial values
+                    newPlantCard.querySelector('.humidity-value').textContent = '50%';
+                    newPlantCard.querySelector('.temperature-value').textContent = '22°C';
+                    newPlantCard.querySelector('.light-value').textContent = '1k Lux';
+                    newPlantCard.querySelector('.plant-img').src = `https://placehold.co/200x200/cccccc/333333?text=${encodeURIComponent(newPlantName)}`; // Generic placeholder image
+
+                    // Attach event listeners to the new card's buttons
+                    attachCardListeners(newPlantCard);
+
+                    // Append the new card to the container
+                    plantContainer.appendChild(newPlantCard);
+
+                    addPlantModal.classList.add('hidden'); // Hide the modal
+                } else {
+                    // Provide feedback if the plant name is empty (e.g., a custom message box)
+                    console.log('Please enter a plant name to add a new plant.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

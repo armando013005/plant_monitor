@@ -10,6 +10,8 @@ latest = {}
 @app.route('/')
 def index():
     return render_template("index.html")
+def hello_world():
+    return "<p>Hello, !</p>"
 
 @app.route('/add')
 def add_plant_info():
@@ -26,10 +28,6 @@ def post_sensor():
 def get_sensor():
     return jsonify(latest)
 
-#TEST
-@app.route("/")
-def hello_world():
-    return "<p>Hello, !</p>"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=80, debug=True)
