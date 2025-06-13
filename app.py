@@ -1,9 +1,18 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,render_template, json
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 latest = {}
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+@app.route('/add')
+def add_plant_info():
+    plant = request.form.get()
+    
 
 @app.route('/sensor', methods=['POST'])
 def post_sensor():
