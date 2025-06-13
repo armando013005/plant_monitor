@@ -10,8 +10,6 @@ latest = {}
 @app.route('/')
 def index():
     return render_template("index.html")
-def hello_world():
-    return "<p>Hello, !</p>"
 
 @app.route('/add')
 def add_plant_info():
