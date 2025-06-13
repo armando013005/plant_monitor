@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Monitor</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .sensor-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .sensor-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sensor Monitor</h1>
+
+        <div class="sensor-card">
+            <div class="sensor-name">
+                <input type="text" id="sensorName" placeholder="Enter Sensor Name">
+            </div>
+            <div id="sensorGraph"></div>
+            <button onclick="addDataPoint()">Add Data Point</button>
+        </div>
+    </div>
+
+    <script>
+        let data = {
+            x: [],
+            y: [],
+            type: 'scatter'
+        };
+
+        let layout = {
+            title: 'Sensor Data',
+            xaxis: {title: 'Time'},
+            yaxis: {title: 'Value'}
+        };
+
+        Plotly.newPlot('sensorGraph', [data], layout);
+
+        function addDataPoint() {
+            let time = new Date();
+            let value = Math.random() * 100; // Simulate sensor data
+
+            data.x.push(time);
+            data.y.push(value);
+
+            let sensorName = document.getElementById('sensorName').value;
+            layout.title = sensorName + ' - Sensor Data';
+
+            Plotly.update('sensorGraph', [data], layout);
+        }
+    </script>
+</body>
+</html>
